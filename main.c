@@ -2,7 +2,7 @@
  * Description: There is a function that splits an original linked list into two different ones.
  * Latest Modification Date: Thu 11/01/2018
  * Author: GitHub @mannuscritto
- * Version: 0.1.0
+ * Version: 0.2.0
  */
 
 #include <stdio.h>
@@ -17,6 +17,7 @@ struct node {
 typedef struct node snode;
 snode *newNode, *pointer, *back, *temp;
 snode *front = NULL, *rear = NULL;
+snode *sFront = NULL, *sRear = NULL;
 
 snode* createNode(int val) {
 	newNode = (snode *)malloc(sizeof(snode));
@@ -29,6 +30,7 @@ snode* createNode(int val) {
 	}
 }
 
+//Funcao Inserir
 void insertion(int val, int pos) {
 	int count = 0, i;
 	newNode = createNode(val);
@@ -73,7 +75,7 @@ void insertion(int val, int pos) {
 	}
 }
 
-//Remover
+//Funcao Remover
 void deletion(int pos) {
 	int count = 0, i, vlr;
 	if (front == NULL) {
@@ -105,7 +107,7 @@ void deletion(int pos) {
 	}
 }
 
-//Teste função mostrar
+//Função Imprimir
 void display() {
 	if (front == NULL) {
 		printf("\nImpossível imprimir valores! A lista está vazia!\n");
@@ -117,8 +119,20 @@ void display() {
 		}
 		printf("\n");
 	}
+	
+	if (sFront == NULL) {
+		printf("\nImpossível imprimir valores! A lista está vazia!\n");
+		return;
+	} else {
+		printf("|");
+		for (pointer = sFront; pointer != NULL; pointer = pointer->next) {
+			printf(" %d |", pointer->value);
+		}
+		printf("\n");
+	}
 }
 
+//Funcao Imprimir Item
 void displayItem(int pos) {
 	if (front == NULL) {
 		printf("\nImpossível imprimir valores! A lista está vazia!\n");
@@ -142,16 +156,29 @@ void displayItem(int pos) {
 	}
 }
 
+//Funcao Splitter
+void dividir(snode *ll, int n) {
+	temp = ll;
+	while (ll->value != n) {
+		ll = ll->next;
+	}
+	sFront = ll->next;
+	sRear = rear;
+	rear = ll;
+	rear->next = NULL;
+}
+
 int main(int argc, char** argv) {
 	setlocale(LC_ALL, "Portuguese");
 	int opt, vlr, pos;
 	while (1) {
 		system("cls");
 		printf("MENU\n\n");
-		printf("\tInserir     [1]\n");
-		printf("\tDeletar     [2]\n");
-		printf("\tImprimir    [3]\n");
-		printf("\tExibir item [4]\n");
+		printf("\tInserir                 [1]\n");
+		printf("\tDeletar                 [2]\n");
+		printf("\tImprimir                [3]\n");
+		printf("\tExibir item             [4]\n");
+		printf("\tDividir lista em duas   [5]\n");
 		printf("\tSair        [0]\n");
 		printf("Digite a opção: ");
 		scanf("%d", &opt);
@@ -183,6 +210,13 @@ int main(int argc, char** argv) {
 					scanf("%d", &pos);
 				} while(pos < 0);
 				displayItem(pos);
+				break;
+			case 5:
+				printf("\nDigite o valor do item que termina a lista: ");
+				do {
+					scanf("%d", &vlr);
+				} while(vlr < 0);
+				dividir(front, vlr);
 				break;
 			case 0:
 				exit(0);
